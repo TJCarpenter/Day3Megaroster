@@ -1,3 +1,16 @@
 .template {
     visibility: hidden;
 }
+
+.student {
+    height: 4rem;
+}
+
+span.student-name {
+    line-height: 2.5rem;
+    padding: 1px;
+}
+
+.actions {
+    float: right;
+}
