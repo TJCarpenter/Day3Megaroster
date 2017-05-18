@@ -3,8 +3,8 @@ $(document).foundation()
 class Megaroster {
   constructor(listSelector) {
     this.studentList = document.querySelector(listSelector)
-    this.max = 0
     this.students = []
+    this.max = 0
     this.setupEventListeners()
     this.load()
   }
@@ -45,16 +45,17 @@ class Megaroster {
     this.save()
   }
 
-  promoteStudent(student, ev){
+  promoteStudent(student, ev) {
     const btn = ev.target
     const li = btn.closest('.student')
     student.promoted = !student.promoted
 
-    if (student.promoted){
+    if (student.promoted) {
       li.classList.add('promoted')
     } else {
       li.classList.remove('promoted')
     }
+    
     this.save()
   }
 
@@ -91,17 +92,47 @@ class Megaroster {
     this.removeClassName(li, 'template')
     li.querySelector('.student-name').textContent = student.name
     li.dataset.id = student.id
-    if (student.promoted){
+
+    if(student.promoted) {
       li.classList.add('promoted')
     }
 
+    this.setupActions(li, student)
+    return li
+  }
+
+  setupActions(li, student) {
     li
       .querySelector('button.remove')
       .addEventListener('click', this.removeStudent.bind(this))
+
     li
       .querySelector('button.promote')
       .addEventListener('click', this.promoteStudent.bind(this, student))
-    return li
+
+    li
+      .querySelector('button.move-up')
+      .addEventListener('click', this.moveUp.bind(this, student))
+
+  }
+
+  moveUp(student, ev) {
+    const btn = ev.target
+    const li = btn.closest('.student')
+
+    const index = this.students.findIndex((currentStudent, i) => {
+      return currentStudent.id === student.id
+    })
+
+    if (index > 0) {
+      this.studentList.insertBefore(li, li.previousElementSibling)
+
+      const previousStudent = this.students[index - 1]
+      this.students[index - 1] = student
+      this.students[index] = previousStudent
+
+      this.save()
+    }
   }
 
   removeClassName(el, className){
@@ -109,4 +140,3 @@ class Megaroster {
   }
 }
 const roster = new Megaroster('#studentList')
-

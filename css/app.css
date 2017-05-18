@@ -12,9 +12,9 @@
   border-top: none;
 }
 
-span.student-name{
-    line-height: 40px;
-    white-space: nowrap;
+span.student-name {
+  line-height: 40px;
+  white-space: nowrap;
 }
 
 .actions {
@@ -23,6 +23,12 @@ span.student-name{
 }
 
 .promoted {
-    background-color: #FFA807;
-    border-color: #FFC656
+  background-color: #FFA807;
+  border-color: #FFC656;
+}
+
+.student:first-child button.move-up {
+  background-color: #ddd;
+  color: #eee;
+  cursor: not-allowed;
 }
