@@ -181,12 +181,10 @@ class Megaroster {
         toEdit.textContent = input
         this.students[index].name = input
     }
-    
+
     this.save();
   }
-
-
-
+  
   removeClassName(el, className){
     el.className = el.className.replace(className, '').trim()
   }
