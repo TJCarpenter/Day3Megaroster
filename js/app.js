@@ -5,6 +5,7 @@ class Megaroster {
     this.studentList = document.querySelector(listSelector)
     this.students = []
     this.max = 0
+    this.flag = false
     this.setupEventListeners()
     this.load()
   }
@@ -52,6 +53,7 @@ class Megaroster {
 
     if (student.promoted) {
       li.classList.add('promoted')
+      btn.closest('.student').style.color = 'red'
     } else {
       li.classList.remove('promoted')
     }
@@ -116,7 +118,11 @@ class Megaroster {
 
     li
       .querySelector('button.move-down')
-      .addEventListener('click', this.moveDown.bind(this, student))
+      .addEventListener('click',this.moveDown.bind(this, student))
+
+    li
+      .querySelector('button.edit')
+      .addEventListener('click',this.makeEditable.bind(this, student))
 
   }
 
@@ -139,16 +145,16 @@ class Megaroster {
     }
   }
 
-  moveDown(student, ev){
+  moveDown(student, ev) {
     const btn = ev.target
-    const li = btn.closest('.student').nextElementSibling
+    const li = btn.closest('.student')
 
     const index = this.students.findIndex((currentStudent, i) => {
       return currentStudent.id === student.id
     })
 
-    if (index < (this.students.length - 1)) {
-      this.studentList.insertBefore(li, li.previousElementSibling)
+    if (index < this.students.length-1) {
+      this.studentList.insertBefore(li, li.nextElementSibling.nextElementSibling)
 
       const nextStudent = this.students[index + 1]
       this.students[index + 1] = student
@@ -157,6 +163,29 @@ class Megaroster {
       this.save()
     }
   }
+
+  makeEditable(student, ev){
+    const btn = ev.target
+    const li = btn.closest('.student')
+    const toEdit = li.firstChild.nextSibling
+    toEdit.makeEditable
+
+    const index = this.students.findIndex((currentStudent, i) => {
+      return currentStudent.id === student.id
+    })
+
+    var input = prompt("Please enter name:", "Enter Name");
+    if (input == null || input == "") {
+        toEdit.textContent = this.students[index].name
+    } else {
+        toEdit.textContent = input
+        this.students[index].name = input
+    }
+    
+    this.save();
+  }
+
+
 
   removeClassName(el, className){
     el.className = el.className.replace(className, '').trim()
